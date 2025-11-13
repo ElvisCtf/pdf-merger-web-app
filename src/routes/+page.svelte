@@ -1,10 +1,15 @@
 <script lang="ts">
+  import mergePDFs from "$lib/features/core/pdfUtils";
+
   let files: File[] = [];
+  let downloadUrl: string | null = null;
 
   function handleFiles(event: Event) {
+    downloadUrl = null;
     const input = event.target as HTMLInputElement;
-    if (input.files) {
-      files = [...files, ...Array.from(input.files)];
+    if (input.files?.length) {
+      files = Array.from(input.files);
+      input.value = "";
     }
   }
 
@@ -13,7 +18,14 @@
     files = [...files];
   }
 
-  function mergePDFs() {
+  async function handleMerge() {
+    try {
+      const blob = await mergePDFs(files);
+      downloadUrl = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Failed to merge PDFs:", error);
+      alert("Something went wrong while merging PDFs. Please try again.");
+    }
   }
 </script>
 
@@ -28,7 +40,7 @@
   <section class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg" aria-labelledby="upload-title">
     <h2 id="upload-title" class="text-xl font-semibold mb-4">Upload PDFs</h2>
     
-    <form class="space-y-4 mt-6" on:submit|preventDefault={mergePDFs}>
+    <form class="space-y-4 mt-6" on:submit|preventDefault={handleMerge}>
       <label>
         <input
           type="file"
@@ -48,7 +60,7 @@
         <ul class="mt-4 space-y-2" aria-label="Uploaded files">
           {#each files as file, i}
             <li class="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-lg">
-              <span class="truncate">{file.name}</span>
+              <span class="truncate">{i+1}. {file.name}</span>
               <button
                 type="button"
                 on:click={() => removeFile(i)}
@@ -75,5 +87,16 @@
         </p>
       {/if}
     </form>
+
+    <!-- Result Download link -->
+    {#if downloadUrl}
+      <a
+        href={downloadUrl}
+        download="merged.pdf"
+        class="mt-4 block text-center text-blue-600 hover:underline"
+      >
+        Download Merged PDF
+      </a>
+    {/if}
   </section>
 </main>
