@@ -29,6 +29,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>PDF Merger App</title>
+</svelte:head>
+
 <main class="min-h-screen bg-gray-100 flex flex-col items-center p-6">
   <!-- Header -->
   <header class="mb-6 text-center">
@@ -38,22 +42,19 @@
 
   <!-- Upload Section -->
   <section class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg" aria-labelledby="upload-title">
-    <h2 id="upload-title" class="text-xl font-semibold mb-4">Upload PDFs</h2>
-    
-    <form class="space-y-4 mt-6" on:submit|preventDefault={handleMerge}>
-      <label>
-        <input
-          type="file"
-          accept="application/pdf"
-          multiple
-          on:change={handleFiles}
-          class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700
-                hover:file:bg-blue-100"
-        />
+    <form class="space-y-4" on:submit|preventDefault={handleMerge}>
+      <label id="upload-title" for="uploadPdf" class="block text-xl font-semibold mb-4">
+        Upload PDF files
       </label>
+      <input 
+        id="uploadPdf" 
+        type="file" 
+        accept="application/pdf" 
+        multiple
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+              file:rounded-full file:border-0 file:text-sm file:font-semibold 
+              file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+      >
 
       <!-- PDF List -->
       {#if files.length > 0}
