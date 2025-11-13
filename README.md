@@ -1,38 +1,32 @@
-# sv
+# PDF Merger
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Description
+A SvelteKit web application for merging multiple PDFs entirely on the client side.
 
-## Creating a project
+## Features
+- Merge multiple PDFs directly in the browser
+- Drag-and-drop or Popup dialog to choose PDFs
+- No server or account required – privacy-friendly
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Tech Stack
+- [SvelteKit](https://kit.svelte.dev)
+- [pdf-lib](https://github.com/Hopding/pdf-lib)
+- [TailwindCSS](https://tailwindcss.com)
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/ElvisCtf/pdf-merger-web-app.git
+cd pdf-merger-web-app
 
-# create a new project in my-app
-npx sv create my-app
-```
+# Install dependencies
+npm install
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+# Run the development server
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Roadmap
+- [ ] Implement drag-and-drop reordering
+- [ ] Add progress indicator for large files
+- [ ] Support password-protected PDFs
