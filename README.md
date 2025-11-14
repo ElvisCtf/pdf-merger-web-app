@@ -3,6 +3,8 @@
 ## Description
 A SvelteKit web application for merging multiple PDFs entirely on the client side.
 
+[Try it out!](https://elvisctf.github.io/pdf-merger-web-app/)
+
 ## Features
 - Merge multiple PDFs directly in the browser
 - Drag-and-drop or Popup dialog to choose PDFs
