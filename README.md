@@ -14,6 +14,7 @@ A SvelteKit web application for merging multiple PDFs entirely on the client sid
 ## Tech Stack
 - [SvelteKit](https://kit.svelte.dev)
 - [pdf-lib](https://github.com/Hopding/pdf-lib)
+- [svelte-dnd-action](svelte-dnd-action)
 - [TailwindCSS](https://tailwindcss.com)
 
 ## Installation
