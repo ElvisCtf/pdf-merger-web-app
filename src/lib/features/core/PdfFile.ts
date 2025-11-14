@@ -1,0 +1,4 @@
+interface PdfFile {
+    id: string,
+    file: File
+};

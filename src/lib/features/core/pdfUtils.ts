@@ -1,6 +1,7 @@
 import { PDFDocument } from 'pdf-lib'; 
 
-export default async function mergePDFs(files: File[]): Promise<Blob> {
+export default async function mergePDFs(pdfFiles: PdfFile[]): Promise<Blob> {
+  const files = pdfFiles.map(item => item.file);
   const mergedPdf = await PDFDocument.create();
 
   for (const file of files) {

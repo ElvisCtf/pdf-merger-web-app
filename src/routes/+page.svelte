@@ -1,32 +1,53 @@
 <script lang="ts">
+  import {flip} from "svelte/animate";
+  import {dndzone} from 'svelte-dnd-action';
   import mergePDFs from "$lib/features/core/pdfUtils";
 
-  let files: File[] = $state([]);
-  let downloadUrl: string | null = $state(null);
+  const flipDurationMs = 150;
+  const dropTargetStyle = {
+      outline: "2px dashed rgb(37, 99, 235)",
+      backgroundColor: "rgb(219, 234, 254)"
+  };
+
+  let pdfFiles = $state<PdfFile[]>([]);
+  let downloadUrl = $state<string | null>(null)
 
   function handleFiles(event: Event) {
     event.preventDefault;
     downloadUrl = null;
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
-      files = Array.from(input.files);
+      pdfFiles = Array.from(input.files).map(file => ({
+        id: crypto.randomUUID(),
+        file
+      }));;
       input.value = "";
     }
   }
 
-  function removeFile(index: number) {
-    files.splice(index, 1);
-    files = [...files];
-  }
-
   async function handleMerge() {
     try {
-      const blob = await mergePDFs(files);
+      const blob = await mergePDFs(pdfFiles);
       downloadUrl = URL.createObjectURL(blob);
     } catch (error) {
       console.error("Failed to merge PDFs:", error);
       alert("Something went wrong while merging PDFs. Please try again.");
     }
+  }
+
+  function removeFile(index: number) {
+    resetDownload()
+    pdfFiles.splice(index, 1);
+    pdfFiles = [...pdfFiles];
+  }
+
+  function handleDnD(event: CustomEvent) {
+    resetDownload()
+    pdfFiles = event.detail.items as PdfFile[];
+  }
+
+  function resetDownload() {
+    downloadUrl = null;
   }
 </script>
 
@@ -59,16 +80,25 @@
       >
 
       <!-- PDF List -->
-      {#if files.length > 0}
-        <ul class="mt-4 space-y-2" aria-label="Uploaded files">
-          {#each files as file, i}
-            <li class="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-lg">
-              <span class="truncate">{i+1}. {file.name}</span>
+      {#if pdfFiles.length > 0}
+        <ul
+          use:dndzone={{ items: pdfFiles, flipDurationMs, dropTargetStyle }}
+          onconsider={handleDnD}
+          onfinalize={handleDnD}
+          class="mt-4 space-y-2" 
+          aria-label="Uploaded files"
+        >
+          {#each pdfFiles as item, i (item.id)}
+            <li 
+              animate:flip="{{ duration: flipDurationMs }}"
+              class="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-lg"
+            >
+              <span class="truncate">{i+1}. {item.file.name}</span>
               <button
                 type="button"
                 onclick={() => removeFile(i)}
                 class="text-red-500 hover:text-red-700 text-sm"
-                aria-label="Remove {file.name}"
+                aria-label="Remove {item.file.name}"
               >
                 Remove
               </button>
@@ -78,7 +108,7 @@
       {/if}
 
       <!-- Merge Button -->
-      {#if files.length > 1}
+      {#if pdfFiles.length > 1}
         <button
           type="submit"
           class="mt-5 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
