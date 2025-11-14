@@ -6,9 +6,10 @@ A SvelteKit web application for merging multiple PDFs entirely on the client sid
 [Try it out!](https://elvisctf.github.io/pdf-merger-web-app/)
 
 ## Features
-- Merge multiple PDFs directly in the browser
+- Merge multiple PDFs directly in the browser / client side
 - Drag-and-drop or Popup dialog to choose PDFs
-- No server or account required – privacy-friendly
+- Drag-and-drop reordering
+- Privacy-friendly
 
 ## Tech Stack
 - [SvelteKit](https://kit.svelte.dev)
@@ -29,6 +30,5 @@ npm run dev
 ```
 
 ## Roadmap
-- [ ] Implement drag-and-drop reordering
 - [ ] Add progress indicator for large files
 - [ ] Support password-protected PDFs
