@@ -24,6 +24,7 @@
 		"vite": "^7.1.10"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-static": "^3.0.10",
 		"pdf-lib": "^1.17.1"
 	}
 }
