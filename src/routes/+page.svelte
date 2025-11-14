@@ -1,10 +1,11 @@
 <script lang="ts">
   import mergePDFs from "$lib/features/core/pdfUtils";
 
-  let files: File[] = [];
-  let downloadUrl: string | null = null;
+  let files: File[] = $state([]);
+  let downloadUrl: string | null = $state(null);
 
   function handleFiles(event: Event) {
+    event.preventDefault;
     downloadUrl = null;
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
@@ -42,7 +43,7 @@
 
   <!-- Upload Section -->
   <section class="bg-white shadow-md rounded-lg p-6 w-full max-w-lg" aria-labelledby="upload-title">
-    <form class="space-y-4" on:submit|preventDefault={handleMerge}>
+    <form class="space-y-4" onsubmit={handleMerge}>
       <label id="upload-title" for="uploadPdf" class="block text-xl font-semibold mb-4">
         Upload PDF files
       </label>
@@ -51,7 +52,7 @@
         type="file" 
         accept="application/pdf" 
         multiple
-        on:change={handleFiles}
+        onchange={handleFiles}
         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
               file:rounded-full file:border-0 file:text-sm file:font-semibold 
               file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
@@ -65,7 +66,7 @@
               <span class="truncate">{i+1}. {file.name}</span>
               <button
                 type="button"
-                on:click={() => removeFile(i)}
+                onclick={() => removeFile(i)}
                 class="text-red-500 hover:text-red-700 text-sm"
                 aria-label="Remove {file.name}"
               >
